@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #32CD32;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerOfStartScreen">
+    <children>
+        <AnchorPane layoutY="60.0" prefHeight="340.0" prefWidth="601.0" style="-fx-background-color: #228B22;">
+            <children>
+                <Button layoutX="354.0" layoutY="84.0" mnemonicParsing="false" onMouseClicked="#startGame" prefHeight="69.0" prefWidth="171.0" text="Start" />
+                <ComboBox fx:id="comboBoxDifficulty" layoutX="14.0" layoutY="31.0" prefHeight="46.0" prefWidth="266.0" promptText="Difficulty" />
+                <ComboBox fx:id="comboBoxSize" layoutX="13.0" layoutY="169.0" prefHeight="46.0" prefWidth="266.0" promptText="Size" />
+            </children>
+        </AnchorPane>
+        <Label layoutX="1.0" prefHeight="60.0" prefWidth="601.0" text="Welcome to Snake Game" textAlignment="CENTER" textFill="#283223">
+            <font>
+                <Font name="Berlin Sans FB" size="24.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
