@@ -3,7 +3,7 @@ package core;
 import java.util.ArrayList;
 import java.util.List;
 
-import static controller.GameController.gameBoard;
+import  controller.GameController.*;
 import static controller.GameController.pane;
 
 public class Snake {
@@ -41,7 +41,7 @@ public class Snake {
         }
     }
 
-    public void move(Fruit fruit) {
+    public void move(Fruit fruit, GameBoard gameBoard) {
         GameObject newHead = createNewHead();
         if (newHead.x >= gameBoard.getX() || newHead.x < 0 || newHead.y < 0 || newHead.y >= gameBoard.getY()) {
             isAlive = false;

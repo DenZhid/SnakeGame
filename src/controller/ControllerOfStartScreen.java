@@ -33,15 +33,13 @@ public class ControllerOfStartScreen {
         String size = (comboBoxSize.getValue() == null)? "10x10": comboBoxSize.getValue();
 
         gameBoard = new GameBoard(size);
-        //gameBoard.newGame();
-        //прорисовка
-
-        GameController gameController = new FXMLLoader(getClass().getResource("/view/gameScreen")).getController();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/gameScreen.fxml"));
+        GameController gameController = loader.getController();
         gameController.setGameBoard(gameBoard);
         gameController.goFrame();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/view/gameScreen"));
-        Scene scene = new Scene(root, 800, 600);
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 800, 600 );
         stage.setTitle("Snake");
         stage.setScene(scene);
         stage.show();

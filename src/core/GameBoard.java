@@ -6,8 +6,8 @@ public class GameBoard {
     private double y;
 
     public GameBoard(String size) {
-        double x = Double.parseDouble(size.split("x")[1]);
-        double y = Double.parseDouble(size.split("x")[2]);
+        double x = Double.parseDouble(size.split("x")[0]);
+        double y = Double.parseDouble(size.split("x")[1]);
 
         this.x = x;
         this.y = y;

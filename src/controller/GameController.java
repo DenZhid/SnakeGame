@@ -15,7 +15,7 @@ import java.util.TimerTask;
 public class GameController {
 
     public static Pane pane;
-    public static GameBoard gameBoard;
+    public GameBoard gameBoard;
     public static int GOAL = 10;//todo goal variable
 
     private int turnDelay;
@@ -38,7 +38,7 @@ public class GameController {
     private class Turn extends TimerTask {
         @Override
         public void run() {
-            snake.move(fruit);
+            snake.move(fruit, gameBoard);
             if (!fruit.isAlive) {
                 //score = score + 5;
                 //setScore(score);
@@ -114,7 +114,7 @@ public class GameController {
     public void drawScene() {
         pane.setPrefSize(gameBoard.getX(), gameBoard.getY());
         snake.draw(gameBoard);
-        snake.draw(gameBoard);
+        fruit.draw(pane);
     }
 
     public void setGameBoard(GameBoard gameBoard) {

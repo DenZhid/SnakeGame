@@ -8,17 +8,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import static com.sun.javafx.scene.control.skin.Utils.getResource;
-
 public class SnakeMain extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ControllerOfStartScreen startController = new FXMLLoader(getResource("/screens/startScreen.fxml")).getController();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("startScreen.fxml"));
+        Parent root = loader.load();
+        ControllerOfStartScreen startController = loader.getController();
         startController.setStage(stage);
         startController.setStartScreen();
 
-        Parent root = FXMLLoader.load(getResource("/screens/startScreen.fxml"));
         Scene scene = new Scene(root, 800, 600);
         stage.setTitle("Snake");
         stage.setScene(scene);
