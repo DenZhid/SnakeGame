@@ -37,7 +37,7 @@ public class GameView {
         //mapOfImages.put(-2, new Image(new FileInputStream("images/EnemySnakeBody.png")));
     }
 
-    public void drawScene() throws FileNotFoundException {
+    public void drawScene() {
         redraw();
         drawFruit();
         drawSnake();
