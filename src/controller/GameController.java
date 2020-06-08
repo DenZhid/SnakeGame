@@ -1,107 +1,95 @@
 package controller;
 
-import core.GameBoard;
-import core.Snake;
-import core.Fruit;
+import core.Game;
 import core.Direction;
+
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
 import view.GameView;
 
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
+import javafx.scene.image.ImageView;
+import javafx.animation.Timeline;
 
 import java.io.FileNotFoundException;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class GameController {
 
-    public Pane gamePane;
-    public  GameBoard gameBoard;
+    public GridPane gamePane;
     public static int GOAL = 10;//todo goal variable
 
     private int turnDelay;
-    private Fruit fruit;
-    private Snake snake;
+    private Game game;
+    private GameView graphics;
+    private KeyCode keyCode;
 
 
     public void goFrame() throws FileNotFoundException {
-        turnDelay = 300;
-        snake = new Snake( gameBoard.getX()/2,  gameBoard.getY()/2);
-        fruit = createNewFruit();
-        Timer timer = new Timer();
-        TimerTask onTurn = new Turn();
-        GameView.drawScene();
-        //score
-        //pause
-        timer.scheduleAtFixedRate(onTurn, 0,10*turnDelay);
-    }
-
-    private class Turn extends TimerTask {
-        @Override
-        public void run() {
-            snake.move(fruit, gameBoard);
-            if (!fruit.isAlive) {
-                //score = score + 5;
-                //setScore(score);
-                turnDelay = turnDelay - 10;
-                fruit = createNewFruit();
-            }
-            if (!snake.isAlive) {
-                gameOver();
-            }
-            if (snake.getLength() > GOAL) {
-                win();
+        turnDelay = 300;//изменяется в зависимости от сложности
+        graphics = new GameView(game);
+        graphics.drawScene();
+        setGraphicsOnPane();
+        Timeline timeLine = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+            game.step();
+            switch(game.status) {
+                case -1:
+                    gameOver();
+                    break;
+                case 1:
+                    win();
+                    break;
+                case 0:
+                    break;
             }
             try {
-                GameView.drawScene();
+                graphics.drawScene();
+                setGraphicsOnPane();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-        }
+        }));
+        //score
+        timeLine.setCycleCount(Animation.INDEFINITE);
+        timeLine.play();
     }
 
     public void KeyPressed(KeyEvent k) {
-        switch (k.getCode()) {
+        keyCode = k.getCode();
+    }
+    public void KeyReleased(){
+        switch (keyCode) {
             case A: {
-                snake.setDirection(Direction.LEFT);
+                game.snake.setNextDirection(Direction.LEFT);
                 break;
             }
             case D: {
-                snake.setDirection(Direction.RIGHT);
+                game.snake.setNextDirection(Direction.RIGHT);
                 break;
             }
             case S: {
-                snake.setDirection(Direction.DOWN);
+                game.snake.setNextDirection(Direction.DOWN);
                 break;
             }
             case W: {
-                snake.setDirection(Direction.UP);
+                game.snake.setNextDirection(Direction.UP);
                 break;
             }
-                /*case KeyEvent.VK_SPACE: {
-                    if (isGameStopped) {
-                        createGame();
-                    }
-        }*/
         }
     }
 
-    private int getRandomPosX() {
-        return (int) (Math.random() * gameBoard.getX());
-    }
-
-    private int getRandomPosY() {
-        return (int) (Math.random() * gameBoard.getX());
-    }
-
-    private Fruit createNewFruit() {
-        Fruit newApple = new Fruit(getRandomPosX(), getRandomPosY());
-        while (snake.checkCollision(newApple)) {
-            newApple = new Fruit(getRandomPosX(), getRandomPosY());
+    private void setGraphicsOnPane() {
+        gamePane.getChildren().clear();
+        ImageView[][] images = graphics.getArrayOfImages();
+        for (int y = 0; y < game.gameBoard.y; y++) {
+            for (int x = 0; x < game.gameBoard.x; x++) {
+                    gamePane.add(images[x][y], x, y);
+            }
         }
-        return newApple;
     }
 
     private void gameOver() {
@@ -118,7 +106,7 @@ public class GameController {
         alert.show();
     }
 
-    public void setGameBoard(GameBoard gameBoard) {
-        this.gameBoard = gameBoard;
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

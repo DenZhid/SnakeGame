@@ -2,10 +2,10 @@ package core;
 
 public class GameObject {
 
-    public double x;
-    public double y;
+    public int x;
+    public int y;
 
-    public GameObject(double x, double y) {
+    public GameObject(int x, int y) {
         this.x = x;
         this.y = y;
     }

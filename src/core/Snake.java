@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Snake {
-    private List<GameObject> snakeParts = new ArrayList<GameObject>();
+    public List<GameObject> snakeParts = new ArrayList<GameObject>();
     public boolean isAlive = true;
-    private Direction direction = Direction.LEFT;
+    private Direction currentDirection = Direction.LEFT;
+    private Direction nextDirection;
 
-    public Snake(double x, double y) {
+    public Snake(int x, int y) {
         GameObject snake1 = new GameObject (x, y);
         GameObject snake2 = new GameObject (x + 1, y);
         GameObject snake3 = new GameObject (x + 2, y);
@@ -18,13 +19,19 @@ public class Snake {
         snakeParts.add(snake3);
     }
 
-    public void setDirection(Direction direct) {
+    public void setNextDirection(Direction nextDirection) {
+        this.nextDirection = nextDirection;
+        checkDirection(nextDirection);
+    }
+
+    public void checkDirection(Direction nextDirection) {
         if (
-                direction != Direction.LEFT & direct == Direction.RIGHT ||
-                        direction != Direction.RIGHT & direct == Direction.LEFT ||
-                        direction != Direction.UP & direct == Direction.DOWN ||
-                        direction != Direction.DOWN & direct == Direction.UP) {
-            switch (this.direction) {
+                        currentDirection != Direction.LEFT & nextDirection == Direction.RIGHT ||
+                        currentDirection != Direction.RIGHT & nextDirection == Direction.LEFT ||
+                        currentDirection != Direction.UP & nextDirection == Direction.DOWN ||
+                        currentDirection != Direction.DOWN & nextDirection == Direction.UP
+        ) {
+            switch (currentDirection) {
                 case LEFT:
                 case RIGHT:
                     if (snakeParts.get(0).x == snakeParts.get(1).x) return;
@@ -34,13 +41,13 @@ public class Snake {
                     if (snakeParts.get(0).y == snakeParts.get(1).y) return;
                     break;
             }
-            direction = direct;
+            currentDirection = nextDirection;
         }
     }
 
     public void move(Fruit fruit, GameBoard gameBoard) {
         GameObject newHead = createNewHead();
-        if (newHead.x >= gameBoard.getX() || newHead.x < 0 || newHead.y < 0 || newHead.y >= gameBoard.getY()) {
+        if (newHead.x >= gameBoard.x || newHead.x < 0 || newHead.y < 0 || newHead.y >= gameBoard.y) {
             isAlive = false;
         } else {
             if (newHead.x == fruit.x & newHead.y == fruit.y) {
@@ -77,7 +84,7 @@ public class Snake {
 
     public GameObject createNewHead() {
         GameObject head = new GameObject(0, 0);
-        switch(direction) {
+        switch(currentDirection) {
             case LEFT:
                 head = new GameObject(snakeParts.get(0).x - 1, snakeParts.get(0).y);
                 break;

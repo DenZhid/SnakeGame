@@ -5,7 +5,7 @@ public class Fruit extends GameObject {
     public boolean isAlive = true;
 
 
-    public Fruit(double x, double y) {
+    public Fruit(int x, int y) {
         super(x, y);
     }
 

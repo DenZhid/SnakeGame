@@ -1,5 +1,6 @@
 package controller;
 
+import core.Game;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,7 +21,7 @@ public class ControllerOfStartScreen {
 
 
     public void setStartScreen() {
-        ObservableList<String> listOfSizes = FXCollections.observableArrayList("10x10", "20x20", "800x600");
+        ObservableList<String> listOfSizes = FXCollections.observableArrayList("10x10");
         ObservableList<String> listOfDifficulties = FXCollections.observableArrayList("Easy", "Normal", "Hard", "Impossible");
         comboBoxDifficulty.setItems(listOfDifficulties);
         comboBoxSize.setItems(listOfSizes);
@@ -35,7 +36,8 @@ public class ControllerOfStartScreen {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = loader.load();
         GameController gameController = loader.getController();
-        gameController.setGameBoard(gameBoard);
+        Game game = new Game(gameBoard);
+        gameController.setGame(game);
         gameController.goFrame();
 
         Scene scene = new Scene(root, 800, 600 );
