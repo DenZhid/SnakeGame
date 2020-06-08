@@ -17,11 +17,10 @@ public class ControllerOfStartScreen {
     public ComboBox<String> comboBoxSize;
 
     private Stage stage;
-    private GameBoard gameBoard;
 
 
     public void setStartScreen() {
-        ObservableList<String> listOfSizes = FXCollections.observableArrayList("10x10", "20x20", "30x30");
+        ObservableList<String> listOfSizes = FXCollections.observableArrayList("10x10", "20x20", "800x600");
         ObservableList<String> listOfDifficulties = FXCollections.observableArrayList("Easy", "Normal", "Hard", "Impossible");
         comboBoxDifficulty.setItems(listOfDifficulties);
         comboBoxSize.setItems(listOfSizes);
@@ -32,13 +31,13 @@ public class ControllerOfStartScreen {
         String difficulty = (comboBoxDifficulty.getValue() == null)? "Easy": comboBoxDifficulty.getValue();
         String size = (comboBoxSize.getValue() == null)? "10x10": comboBoxSize.getValue();
 
-        gameBoard = new GameBoard(size);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/gameScreen.fxml"));
+        GameBoard gameBoard = new GameBoard(size);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
+        Parent root = loader.load();
         GameController gameController = loader.getController();
         gameController.setGameBoard(gameBoard);
         gameController.goFrame();
 
-        Parent root = loader.load();
         Scene scene = new Scene(root, 800, 600 );
         stage.setTitle("Snake");
         stage.setScene(scene);

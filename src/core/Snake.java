@@ -3,9 +3,6 @@ package core;
 import java.util.ArrayList;
 import java.util.List;
 
-import  controller.GameController.*;
-import static controller.GameController.pane;
-
 public class Snake {
     private List<GameObject> snakeParts = new ArrayList<GameObject>();
     public boolean isAlive = true;
@@ -99,12 +96,5 @@ public class Snake {
 
     public void removeTail() {
         snakeParts.remove(snakeParts.size() - 1);
-    }
-
-    public void draw(GameBoard gameBoard) {
-        /*pane.getChildren().add(image);
-        for (int i = 1; i < snakeParts.size(); i++) {
-           pane.getChildren().add(image);
-        }*/
     }
 }

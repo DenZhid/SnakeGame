@@ -4,18 +4,21 @@ import core.GameBoard;
 import core.Snake;
 import core.Fruit;
 import core.Direction;
+import view.GameView;
 
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+
+import java.io.FileNotFoundException;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameController {
 
-    public static Pane pane;
-    public GameBoard gameBoard;
+    public Pane gamePane;
+    public  GameBoard gameBoard;
     public static int GOAL = 10;//todo goal variable
 
     private int turnDelay;
@@ -23,13 +26,13 @@ public class GameController {
     private Snake snake;
 
 
-    public void goFrame() {
+    public void goFrame() throws FileNotFoundException {
         turnDelay = 300;
         snake = new Snake( gameBoard.getX()/2,  gameBoard.getY()/2);
-        createNewFruit();
+        fruit = createNewFruit();
         Timer timer = new Timer();
         TimerTask onTurn = new Turn();
-        drawScene();
+        GameView.drawScene();
         //score
         //pause
         timer.scheduleAtFixedRate(onTurn, 0,10*turnDelay);
@@ -51,7 +54,11 @@ public class GameController {
             if (snake.getLength() > GOAL) {
                 win();
             }
-            drawScene();
+            try {
+                GameView.drawScene();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -109,12 +116,6 @@ public class GameController {
         alert.setTitle("Snake");
         alert.setHeaderText("Вы выиграли!");
         alert.show();
-    }
-
-    public void drawScene() {
-        pane.setPrefSize(gameBoard.getX(), gameBoard.getY());
-        snake.draw(gameBoard);
-        fruit.draw(pane);
     }
 
     public void setGameBoard(GameBoard gameBoard) {

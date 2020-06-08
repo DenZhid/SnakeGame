@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class SnakeMain extends Application {
+public class StartScreenView extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
