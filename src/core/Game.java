@@ -4,21 +4,42 @@ public class Game {
 
     public GameBoard gameBoard;
     public Snake snake;
+    public EnemySnake enemySnake;
     public Fruit fruit;
     public int status = 0;
-    public static int GOAL = 10;//todo goal variable
+    public static int GOAL;
 
-    public Game(GameBoard gameBoard) {
+    public Game(GameBoard gameBoard, String difficulty) {
         this.gameBoard = gameBoard;
         snake = new Snake( gameBoard.x/2,  gameBoard.y/2);
+        enemySnake = new EnemySnake(0, 0);
         fruit = createNewFruit();
+        switch (difficulty) {
+            case "Easy":
+                GOAL = 10;
+                break;
+            case "Normal":
+                GOAL = 15;
+                break;
+            case "Hard":
+                GOAL = 20;
+                break;
+        }
     }
 
     public void step() {
-        snake.move(fruit, gameBoard);
+        snake.move(fruit, gameBoard, enemySnake);
+        if (enemySnake.isAlive) {
+            enemySnake.checkNextStep(gameBoard);
+            enemySnake.getRandomDirection(gameBoard);
+            enemySnake.move(fruit, gameBoard, snake);
+        } else {
+            enemySnake.deathTimer--;
+            if (enemySnake.deathTimer == 0) {
+                enemySnake = new EnemySnake(0, 0);
+            }
+        }
         if (!fruit.isAlive) {
-            //score = score + 5;
-            //setScore(score);
             fruit = createNewFruit();
         }
         checkStatus();
@@ -26,7 +47,7 @@ public class Game {
 
     private Fruit createNewFruit() {
         Fruit newApple = new Fruit(getRandomPosX(), getRandomPosY());
-        while (snake.checkCollision(newApple)) {
+        while (snake.checkCollision(newApple) && enemySnake.checkCollision(newApple)) {
             newApple = new Fruit(getRandomPosX(), getRandomPosY());
         }
         return newApple;
@@ -43,9 +64,8 @@ public class Game {
     public void checkStatus() {
         if (!snake.isAlive) {
             status = -1;
-        }
-        if (snake.snakeParts.size() > GOAL) {
-            status = 0;
+        } else if (snake.snakeParts.size() > GOAL) {
+            status = 1;
         }
     }
 }

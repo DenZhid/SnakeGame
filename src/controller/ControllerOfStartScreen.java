@@ -1,6 +1,8 @@
 package controller;
 
 import core.Game;
+import core.GameBoard;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,8 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
-
-import core.GameBoard;
 
 public class ControllerOfStartScreen {
 
@@ -21,8 +21,8 @@ public class ControllerOfStartScreen {
 
 
     public void setStartScreen() {
-        ObservableList<String> listOfSizes = FXCollections.observableArrayList("10x10");
-        ObservableList<String> listOfDifficulties = FXCollections.observableArrayList("Easy", "Normal", "Hard", "Impossible");
+        ObservableList<String> listOfSizes = FXCollections.observableArrayList("10x10", "15x15", "20x20");
+        ObservableList<String> listOfDifficulties = FXCollections.observableArrayList("Easy", "Normal", "Hard");
         comboBoxDifficulty.setItems(listOfDifficulties);
         comboBoxSize.setItems(listOfSizes);
     }
@@ -36,15 +36,14 @@ public class ControllerOfStartScreen {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = loader.load();
         GameController gameController = loader.getController();
-        Game game = new Game(gameBoard);
+        Game game = new Game(gameBoard, difficulty);
         gameController.setGame(game);
+        gameController.setTurnDelay(difficulty);
         gameController.goFrame();
 
         Scene scene = new Scene(root, 800, 600 );
         stage.setTitle("Snake");
         stage.setScene(scene);
-        stage.show();
-
     }
 
     public void setStage(Stage stage) {

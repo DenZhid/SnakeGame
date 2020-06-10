@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Snake {
-    public List<GameObject> snakeParts = new ArrayList<GameObject>();
+    public List<GameObject> snakeParts = new ArrayList<>();
     public boolean isAlive = true;
-    private Direction currentDirection = Direction.LEFT;
-    private Direction nextDirection;
+    public Direction currentDirection = Direction.LEFT;
+    public int deathTimer = 0;
 
     public Snake(int x, int y) {
         GameObject snake1 = new GameObject (x, y);
@@ -20,11 +20,29 @@ public class Snake {
     }
 
     public void setNextDirection(Direction nextDirection) {
-        this.nextDirection = nextDirection;
-        checkDirection(nextDirection);
+        if (
+                currentDirection != Direction.LEFT & nextDirection == Direction.RIGHT ||
+                        currentDirection != Direction.RIGHT & nextDirection == Direction.LEFT ||
+                        currentDirection != Direction.UP & nextDirection == Direction.DOWN ||
+                        currentDirection != Direction.DOWN & nextDirection == Direction.UP
+        ) {
+            switch (currentDirection) {
+                case LEFT:
+                case RIGHT:
+                    if (snakeParts.get(0).x == snakeParts.get(1).x) return;
+                    break;
+                case UP:
+                case DOWN:
+                    if (snakeParts.get(0).y == snakeParts.get(1).y) return;
+                    break;
+            }
+            currentDirection = nextDirection;
+        }
+        //this.nextDirection = nextDirection;
+        //checkDirection(nextDirection);
     }
 
-    public void checkDirection(Direction nextDirection) {
+    /*public void checkDirection(Direction nextDirection) {
         if (
                         currentDirection != Direction.LEFT & nextDirection == Direction.RIGHT ||
                         currentDirection != Direction.RIGHT & nextDirection == Direction.LEFT ||
@@ -43,34 +61,33 @@ public class Snake {
             }
             currentDirection = nextDirection;
         }
-    }
+    }*///попробую реализовать позже
 
-    public void move(Fruit fruit, GameBoard gameBoard) {
+    public void move(Fruit fruit, GameBoard gameBoard, Snake enemySnake) {
         GameObject newHead = createNewHead();
         if (newHead.x >= gameBoard.x || newHead.x < 0 || newHead.y < 0 || newHead.y >= gameBoard.y) {
             isAlive = false;
+            deathTimer = 5;
         } else {
-            if (newHead.x == fruit.x & newHead.y == fruit.y) {
-                fruit.isAlive = false;
-                if (checkCollision(newHead)) {
-                    isAlive = false;
-                    return;
-                } else {
-                    snakeParts.add(0, newHead);
-                }
-            } else { if (checkCollision(newHead)) {
+            if (checkCollision(newHead)) {
                 isAlive = false;
-                return;
+                deathTimer = 5;
             } else {
+                for (GameObject enemySegment: enemySnake.snakeParts) {
+                    if(newHead.x == enemySegment.x & newHead.y == enemySegment.y) {
+                        isAlive = false;
+                        deathTimer = 5;
+                        return;
+                    }
+                }
                 snakeParts.add(0, newHead);
-            }
-                removeTail();
+                if (newHead.x == fruit.x & newHead.y == fruit.y) {
+                    fruit.isAlive = false;
+                } else {
+                    removeTail();
+                }
             }
         }
-    }
-
-    public int getLength() {
-        return snakeParts.size();
     }
 
     public boolean checkCollision(GameObject newHead) {
