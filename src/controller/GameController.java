@@ -6,7 +6,6 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyEvent;
-//import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.image.ImageView;
 
@@ -23,7 +22,6 @@ public class GameController {
     public int turnDelay;
     private Game game;
     private GameView graphics;
-   // private KeyCode keyCode;
     private Timeline timeLine;
 
 
@@ -36,7 +34,7 @@ public class GameController {
         timeLine.play();
     }
 
-    public void KeyPressed(KeyEvent k) {
+    public void keyPressed(KeyEvent k) {
         switch (k.getCode()) {
             case A: {
                 game.snake.setNextDirection(Direction.LEFT);
@@ -55,28 +53,7 @@ public class GameController {
                 break;
             }
         }
-        //keyCode = k.getCode();
     }
-    /*public void KeyReleased(){
-        switch (keyCode) {
-            case A: {
-                game.snake.setNextDirection(Direction.LEFT);
-                break;
-            }
-            case D: {
-                game.snake.setNextDirection(Direction.RIGHT);
-                break;
-            }
-            case S: {
-                game.snake.setNextDirection(Direction.DOWN);
-                break;
-            }
-            case W: {
-                game.snake.setNextDirection(Direction.UP);
-                break;
-            }
-        }
-    }*/
 
     private void setGraphicsOnPane() {
         gamePane.getChildren().clear();

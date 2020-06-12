@@ -38,44 +38,24 @@ public class Snake {
             }
             currentDirection = nextDirection;
         }
-        //this.nextDirection = nextDirection;
-        //checkDirection(nextDirection);
     }
-
-    /*public void checkDirection(Direction nextDirection) {
-        if (
-                        currentDirection != Direction.LEFT & nextDirection == Direction.RIGHT ||
-                        currentDirection != Direction.RIGHT & nextDirection == Direction.LEFT ||
-                        currentDirection != Direction.UP & nextDirection == Direction.DOWN ||
-                        currentDirection != Direction.DOWN & nextDirection == Direction.UP
-        ) {
-            switch (currentDirection) {
-                case LEFT:
-                case RIGHT:
-                    if (snakeParts.get(0).x == snakeParts.get(1).x) return;
-                    break;
-                case UP:
-                case DOWN:
-                    if (snakeParts.get(0).y == snakeParts.get(1).y) return;
-                    break;
-            }
-            currentDirection = nextDirection;
-        }
-    }*///попробую реализовать позже
 
     public void move(Fruit fruit, GameBoard gameBoard, Snake enemySnake) {
         GameObject newHead = createNewHead();
         if (newHead.x >= gameBoard.x || newHead.x < 0 || newHead.y < 0 || newHead.y >= gameBoard.y) {
             isAlive = false;
+            snakeParts.clear();
             deathTimer = 5;
         } else {
             if (checkCollision(newHead)) {
                 isAlive = false;
+                snakeParts.clear();
                 deathTimer = 5;
             } else {
                 for (GameObject enemySegment: enemySnake.snakeParts) {
                     if(newHead.x == enemySegment.x & newHead.y == enemySegment.y) {
                         isAlive = false;
+                        snakeParts.clear();
                         deathTimer = 5;
                         return;
                     }

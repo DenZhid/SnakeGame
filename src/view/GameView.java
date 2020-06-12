@@ -43,7 +43,9 @@ public class GameView {
         if (forGraphics.enemySnake.isAlive) {
             drawEnemySnake();
         }
-        drawSnake();
+        if (forGraphics.snake.isAlive) {
+            drawSnake();
+        }
     }
 
     public void redraw() {

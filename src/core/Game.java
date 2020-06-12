@@ -30,8 +30,8 @@ public class Game {
     public void step() {
         snake.move(fruit, gameBoard, enemySnake);
         if (enemySnake.isAlive) {
-            enemySnake.checkNextStep(gameBoard);
-            enemySnake.getRandomDirection(gameBoard);
+            enemySnake.getNextDirection(fruit, snake);
+            enemySnake.checkBorder(gameBoard);
             enemySnake.move(fruit, gameBoard, snake);
         } else {
             enemySnake.deathTimer--;
