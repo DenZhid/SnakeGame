@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
-import view.GameView;
 
 public class ControllerOfStartScreen {
 
@@ -42,8 +41,8 @@ public class ControllerOfStartScreen {
         String size = (comboBoxSize.getValue() == null)? "10x10": comboBoxSize.getValue();
         String windowSize = (comboBoxWindow.getValue() == null)? "600x400": comboBoxWindow.getValue();
 
-        int WIDTH = Integer.parseInt(windowSize.split("x")[0]);
-        int HEIGHT = Integer.parseInt(windowSize.split("x")[1]);
+        double WIDTH = Double.parseDouble(windowSize.split("x")[0]);
+        double HEIGHT = Double.parseDouble(windowSize.split("x")[1]);
         GameBoard gameBoard = new GameBoard(size);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = loader.load();

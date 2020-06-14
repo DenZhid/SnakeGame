@@ -2,11 +2,12 @@ package core;
 
 public class Game {
 
-    public GameBoard gameBoard;
-    public Snake snake;
-    public EnemySnake enemySnake;
-    public Fruit fruit;
-    public int goal;
+    private GameBoard gameBoard;
+    private Snake snake;
+    private EnemySnake enemySnake;
+    private Fruit fruit;
+    private int goal;
+    private int deathTimer;
 
     public enum Status {
         LOSE,
@@ -34,24 +35,29 @@ public class Game {
 
     public void step() {
         snake.move(fruit, gameBoard, enemySnake);
-        if (enemySnake.isAlive) {
+        deathTimer = enemySnake.getDeathTimer();
+        if (enemySnake.getStatusOfSnake()) {
             enemySnake.getNextDirection(fruit, snake);
             enemySnake.checkBorder(gameBoard);
             enemySnake.move(fruit, gameBoard, snake);
         } else {
-            enemySnake.deathTimer--;
-            if (enemySnake.deathTimer == 0) {
+            deathTimer--;
+            enemySnake.setDeathTimer(deathTimer);
+            if (enemySnake.getDeathTimer() == 0) {
                 enemySnake = new EnemySnake(0, 0);
             }
         }
-        if (!fruit.isAlive) {
+        if (!fruit.getStatusOfFruit()) {
             fruit = createNewFruit();
         }
     }
 
     private Fruit createNewFruit() {
         Fruit newApple = new Fruit(getRandomPosX(), getRandomPosY());
-        while (snake.checkCollision(newApple, snake.snakeParts) && enemySnake.checkCollision(newApple, enemySnake.snakeParts)) {
+        while (
+                snake.checkCollision(newApple, snake.getSnakeParts()) &&
+                        enemySnake.checkCollision(newApple, enemySnake.getSnakeParts())
+        ) {
             newApple = new Fruit(getRandomPosX(), getRandomPosY());
         }
         return newApple;
@@ -66,10 +72,26 @@ public class Game {
     }
 
     public Status checkStatus() {
-        if (!snake.isAlive) {
+        if (!snake.getStatusOfSnake()) {
             return Status.LOSE;
-        } else if (snake.snakeParts.size() > goal) {
+        } else if (snake.getSnakeParts().size() > goal) {
            return Status.WIN;
         } else return Status.CONTINUE;
+    }
+
+    public Snake getSnake() {
+        return snake;
+    }
+
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    public Fruit getFruit() {
+        return fruit;
+    }
+
+    public EnemySnake getEnemySnake() {
+        return enemySnake;
     }
 }

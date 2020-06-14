@@ -25,13 +25,14 @@ public class GameController {
     private Game game;
     private GameView graphics;
     private Timeline timeLine;
-    private int WIDTH;
-    private int HEIGHT;
+    private double WIDTH;
+    private double HEIGHT;
 
 
     public void goFrame() throws FileNotFoundException {
         graphics = new GameView(game, WIDTH, HEIGHT);
         graphics.drawScene();
+        gamePane.setPrefSize(WIDTH, HEIGHT);
         setGraphicsOnPane();
         gamePane.setFocusTraversable(true);
         timeLine.setCycleCount(Animation.INDEFINITE);
@@ -41,19 +42,19 @@ public class GameController {
     public void keyPressed(KeyEvent k) {
         switch (k.getCode()) {
             case A: {
-                game.snake.setNextDirection(Direction.LEFT);
+                game.getSnake().setNextDirection(Direction.LEFT);
                 break;
             }
             case D: {
-                game.snake.setNextDirection(Direction.RIGHT);
+                game.getSnake().setNextDirection(Direction.RIGHT);
                 break;
             }
             case S: {
-                game.snake.setNextDirection(Direction.DOWN);
+                game.getSnake().setNextDirection(Direction.DOWN);
                 break;
             }
             case W: {
-                game.snake.setNextDirection(Direction.UP);
+                game.getSnake().setNextDirection(Direction.UP);
                 break;
             }
         }
@@ -62,8 +63,8 @@ public class GameController {
     private void setGraphicsOnPane() {
         gamePane.getChildren().clear();
         ImageView[][] images = graphics.getArrayOfImages();
-        for (int y = 0; y < game.gameBoard.y; y++) {
-            for (int x = 0; x < game.gameBoard.x; x++) {
+        for (int y = 0; y < game.getGameBoard().y; y++) {
+            for (int x = 0; x < game.getGameBoard().x; x++) {
                     gamePane.add(images[x][y], x, y);
             }
         }
@@ -118,7 +119,7 @@ public class GameController {
         }));
     }
 
-    public void setWidthAndHeight(int WIDTH, int HEIGHT) {
+    public void setWidthAndHeight(double WIDTH, double HEIGHT) {
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
     }

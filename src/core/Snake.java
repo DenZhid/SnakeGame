@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Snake {
-    public List<GameObject> snakeParts = new ArrayList<>();
-    public Direction currentDirection = Direction.LEFT;
-    public Direction nextDirection;
-    public boolean isAlive = true;
-    public int deathTimer = 0;
+
+    private List<GameObject> snakeParts = new ArrayList<>();
+    private Direction currentDirection = Direction.LEFT;
+    private Direction nextDirection;
+    private boolean isAlive = true;
+    private int deathTimer = 0;
 
     public Snake(int x, int y) {
         GameObject snake1 = new GameObject (x, y);
@@ -18,10 +19,6 @@ public class Snake {
         snakeParts.add(snake1);
         snakeParts.add(snake2);
         snakeParts.add(snake3);
-    }
-
-    public void setNextDirection(Direction nextDirection) {
-            this.nextDirection = nextDirection;
     }
 
     public void move(Fruit fruit, GameBoard gameBoard, Snake enemySnake) {
@@ -50,7 +47,7 @@ public class Snake {
                     }
                 snakeParts.add(0, newHead);
                 if (newHead.x == fruit.x & newHead.y == fruit.y) {
-                    fruit.isAlive = false;
+                    fruit.setStatusOfFruit(false);
                 } else {
                     removeTail();
                 }
@@ -60,7 +57,7 @@ public class Snake {
 
     public boolean checkCollision(GameObject newHead, List<GameObject> partsOfSnake) {
         for (GameObject segment: partsOfSnake) {
-            if (newHead.x == segment.x & newHead.y == segment.y) {
+            if (newHead.x == segment.x && newHead.y == segment.y) {
                 return true;
             }
         }
@@ -88,5 +85,41 @@ public class Snake {
 
     public void removeTail() {
         snakeParts.remove(snakeParts.size() - 1);
+    }
+
+    public boolean getStatusOfSnake() {
+        return isAlive;
+    }
+
+    public void setStatusOfSnake(boolean isAlive) {
+        this.isAlive = isAlive;
+    }
+
+    public List<GameObject> getSnakeParts() {
+        return snakeParts;
+    }
+
+    public int getDeathTimer() {
+        return deathTimer;
+    }
+
+    public void setDeathTimer(int deathTimer) {
+        this.deathTimer = deathTimer;
+    }
+
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
+
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+
+    public Direction getNextDirection() {
+        return nextDirection;
+    }
+
+    public void setNextDirection(Direction nextDirection) {
+        this.nextDirection = nextDirection;
     }
 }
