@@ -5,8 +5,9 @@ import java.util.List;
 
 public class Snake {
     public List<GameObject> snakeParts = new ArrayList<>();
-    public boolean isAlive = true;
     public Direction currentDirection = Direction.LEFT;
+    public Direction nextDirection;
+    public boolean isAlive = true;
     public int deathTimer = 0;
 
     public Snake(int x, int y) {
@@ -20,46 +21,33 @@ public class Snake {
     }
 
     public void setNextDirection(Direction nextDirection) {
+            this.nextDirection = nextDirection;
+    }
+
+    public void move(Fruit fruit, GameBoard gameBoard, Snake enemySnake) {
         if (
                 currentDirection != Direction.LEFT & nextDirection == Direction.RIGHT ||
                         currentDirection != Direction.RIGHT & nextDirection == Direction.LEFT ||
                         currentDirection != Direction.UP & nextDirection == Direction.DOWN ||
                         currentDirection != Direction.DOWN & nextDirection == Direction.UP
-        ) {
-            switch (currentDirection) {
-                case LEFT:
-                case RIGHT:
-                    if (snakeParts.get(0).x == snakeParts.get(1).x) return;
-                    break;
-                case UP:
-                case DOWN:
-                    if (snakeParts.get(0).y == snakeParts.get(1).y) return;
-                    break;
-            }
-            currentDirection = nextDirection;
-        }
-    }
-
-    public void move(Fruit fruit, GameBoard gameBoard, Snake enemySnake) {
+        ) currentDirection = nextDirection;
         GameObject newHead = createNewHead();
         if (newHead.x >= gameBoard.x || newHead.x < 0 || newHead.y < 0 || newHead.y >= gameBoard.y) {
             isAlive = false;
             snakeParts.clear();
             deathTimer = 5;
         } else {
-            if (checkCollision(newHead)) {
+            if (checkCollision(newHead, snakeParts)) {
                 isAlive = false;
                 snakeParts.clear();
                 deathTimer = 5;
             } else {
-                for (GameObject enemySegment: enemySnake.snakeParts) {
-                    if(newHead.x == enemySegment.x & newHead.y == enemySegment.y) {
+                    if(checkCollision(newHead, enemySnake.snakeParts)) {
                         isAlive = false;
                         snakeParts.clear();
                         deathTimer = 5;
                         return;
                     }
-                }
                 snakeParts.add(0, newHead);
                 if (newHead.x == fruit.x & newHead.y == fruit.y) {
                     fruit.isAlive = false;
@@ -70,8 +58,8 @@ public class Snake {
         }
     }
 
-    public boolean checkCollision(GameObject newHead) {
-        for (GameObject segment: snakeParts) {
+    public boolean checkCollision(GameObject newHead, List<GameObject> partsOfSnake) {
+        for (GameObject segment: partsOfSnake) {
             if (newHead.x == segment.x & newHead.y == segment.y) {
                 return true;
             }

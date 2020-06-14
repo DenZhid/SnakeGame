@@ -1,5 +1,6 @@
 package controller;
 
+import core.Difficulty;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -19,14 +20,17 @@ import core.Direction;
 public class GameController {
 
     public GridPane gamePane;
-    public int turnDelay;
+
+    private int turnDelay;
     private Game game;
     private GameView graphics;
     private Timeline timeLine;
+    private int WIDTH;
+    private int HEIGHT;
 
 
     public void goFrame() throws FileNotFoundException {
-        graphics = new GameView(game);
+        graphics = new GameView(game, WIDTH, HEIGHT);
         graphics.drawScene();
         setGraphicsOnPane();
         gamePane.setFocusTraversable(true);
@@ -85,32 +89,37 @@ public class GameController {
         this.game = game;
     }
 
-    public void setTurnDelay(String difficulty) {
+    public void setTurnDelay(Difficulty difficulty) {
         switch (difficulty) {
-            case "Easy":
+            case EASY:
                 turnDelay = 300;
                 break;
-            case "Normal":
+            case NORMAL:
                 turnDelay = 200;
                 break;
-            case "Hard":
+            case HARD:
                 turnDelay = 100;
                 break;
         }
        timeLine = new Timeline(new KeyFrame(Duration.millis(turnDelay), event -> {
             game.step();
-            switch(game.status) {
-                case -1:
+            switch(game.checkStatus()) {
+                case LOSE:
                     gameOver();
                     break;
-                case 1:
+                case WIN:
                     win();
                     break;
-                case 0:
+                case CONTINUE:
                     break;
             }
             graphics.drawScene();
             setGraphicsOnPane();
         }));
+    }
+
+    public void setWidthAndHeight(int WIDTH, int HEIGHT) {
+        this.WIDTH = WIDTH;
+        this.HEIGHT = HEIGHT;
     }
 }

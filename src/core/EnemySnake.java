@@ -54,170 +54,58 @@ public class EnemySnake extends Snake {
 
     public void getNextDirection(Fruit fruit, Snake snake) {
         GameObject enemySnakeHead = snakeParts.get(0);
-        boolean checked = true;
-        if (enemySnakeHead.x < fruit.x & currentDirection != Direction.LEFT) {
-            for (GameObject enemySnakeSegment: snakeParts) {
-                if (enemySnakeHead.x + 1 == enemySnakeSegment.x & enemySnakeHead.y == enemySnakeSegment.y) {
-                    checked = false;
-                    break;
-                }
-            }
-            if (checked) {
-                for (GameObject snakeSegment: snake.snakeParts) {
-                    if (enemySnakeHead.x + 1 == snakeSegment.x & enemySnakeHead.y == snakeSegment.y) {
-                        checked = false;
-                        break;
-                    }
-                }
-            }
-            if (checked) {
+        GameObject newHead = new GameObject(enemySnakeHead.x++, enemySnakeHead.y);
+        if (enemySnakeHead.x < fruit.x && currentDirection != Direction.LEFT) {
+            if (checkNextDirection(newHead, snake)) {
                 setNextDirection(Direction.RIGHT);
             } else {
-                checked = true;
-                for (GameObject enemySnakeSegment: snakeParts) {
-                    if (enemySnakeHead.x == enemySnakeSegment.x & enemySnakeHead.y + 1 == enemySnakeSegment.y) {
-                        checked = false;
-                        break;
-                    }
-                }
-                if (checked) {
-                    for (GameObject snakeSegment: snake.snakeParts) {
-                        if (enemySnakeHead.x == snakeSegment.x & enemySnakeHead.y + 1 == snakeSegment.y) {
-                            checked = false;
-                            break;
-                        }
-                    }
-                }
-                if (checked) {
+                newHead = new GameObject(enemySnakeHead.x, enemySnakeHead.y++);
+                if (checkNextDirection(newHead, snake)) {
                     setNextDirection(Direction.DOWN);
-                } else
-                {
+                } else {
                     setNextDirection(Direction.UP);
                 }
             }
-        } else
-            if (enemySnakeHead.x > fruit.x & currentDirection != Direction.RIGHT) {
-            for (GameObject enemySnakeSegment: snakeParts) {
-                if (enemySnakeHead.x - 1 == enemySnakeSegment.x & enemySnakeHead.y == enemySnakeSegment.y) {
-                    checked = false;
-                    break;
-                }
-            }
-            if (checked) {
-                for (GameObject snakeSegment: snake.snakeParts) {
-                    if (enemySnakeHead.x - 1 == snakeSegment.x & enemySnakeHead.y == snakeSegment.y) {
-                        checked = false;
-                        break;
-                    }
-                }
-            }
-            if (checked) {
+        } else if (enemySnakeHead.x > fruit.x && currentDirection != Direction.RIGHT) {
+            newHead = new GameObject(enemySnakeHead.x--, enemySnakeHead.y);
+            if (checkNextDirection(newHead, snake)) {
                 setNextDirection(Direction.LEFT);
-            } else  {
-                checked = true;
-                for (GameObject enemySnakeSegment: snakeParts) {
-                    if (enemySnakeHead.x == enemySnakeSegment.x & enemySnakeHead.y + 1 == enemySnakeSegment.y) {
-                        checked = false;
-                        break;
-                    }
-                }
-                if (checked) {
-                    for (GameObject snakeSegment: snake.snakeParts) {
-                        if (enemySnakeHead.x == snakeSegment.x & enemySnakeHead.y + 1 == snakeSegment.y) {
-                            checked = false;
-                            break;
-                        }
-                    }
-                }
-                if (checked) {
+            } else {
+                newHead = new GameObject(enemySnakeHead.x, enemySnakeHead.y++);
+                if (checkNextDirection(newHead, snake)) {
                     setNextDirection(Direction.DOWN);
-                } else
-                {
+                } else {
                     setNextDirection(Direction.UP);
                 }
             }
-        } else
-            if (enemySnakeHead.y < fruit.y & currentDirection != Direction.UP) {
-            for (GameObject enemySnakeSegment: snakeParts) {
-                if (enemySnakeHead.x == enemySnakeSegment.x & enemySnakeHead.y + 1 == enemySnakeSegment.y) {
-                    checked = false;
-                    break;
-                }
-            }
-            if (checked) {
-                for (GameObject snakeSegment: snake.snakeParts) {
-                    if (enemySnakeHead.x == snakeSegment.x & enemySnakeHead.y + 1 == snakeSegment.y) {
-                        checked = false;
-                        break;
-                    }
-                }
-            }
-            if (checked) {
+        } else if (enemySnakeHead.y < fruit.y && currentDirection != Direction.UP) {
+            newHead = new GameObject(enemySnakeHead.x, enemySnakeHead.y++);
+            if (checkNextDirection(newHead, snake)) {
                 setNextDirection(Direction.DOWN);
             } else {
-                checked = true;
-                for (GameObject enemySnakeSegment: snakeParts) {
-                    if (enemySnakeHead.x + 1 == enemySnakeSegment.x & enemySnakeHead.y == enemySnakeSegment.y) {
-                        checked = false;
-                        break;
-                    }
-                }
-                if (checked) {
-                    for (GameObject snakeSegment: snake.snakeParts) {
-                        if (enemySnakeHead.x + 1 == snakeSegment.x & enemySnakeHead.y == snakeSegment.y) {
-                            checked = false;
-                            break;
-                        }
-                    }
-                }
-                if (checked) {
+                newHead = new GameObject(enemySnakeHead.x++, enemySnakeHead.y);
+                if (checkNextDirection(newHead, snake)) {
                     setNextDirection(Direction.RIGHT);
-                } else
-                {
+                } else {
                     setNextDirection(Direction.LEFT);
                 }
             }
-        } else
-            if (enemySnakeHead.y > fruit.y & currentDirection != Direction.DOWN) {
-                for (GameObject enemySnakeSegment: snakeParts) {
-                    if (enemySnakeHead.x == enemySnakeSegment.x & enemySnakeHead.y - 1 == enemySnakeSegment.y) {
-                        checked = false;
-                        break;
-                    }
-                }
-                if (checked) {
-                    for (GameObject snakeSegment: snake.snakeParts) {
-                        if (enemySnakeHead.x == snakeSegment.x & enemySnakeHead.y - 1 == snakeSegment.y) {
-                            checked = false;
-                            break;
-                        }
-                    }
-                }
-                if (checked) {
+        } else if (enemySnakeHead.y > fruit.y && currentDirection != Direction.DOWN) {
+               newHead = new GameObject(enemySnakeHead.x, enemySnakeHead.y--);
+                if (checkNextDirection(newHead, snake)) {
                     setNextDirection(Direction.UP);
                 } else {
-                    checked = true;
-                    for (GameObject enemySnakeSegment: snakeParts) {
-                        if (enemySnakeHead.x + 1 == enemySnakeSegment.x & enemySnakeHead.y == enemySnakeSegment.y) {
-                            checked = false;
-                            break;
-                        }
-                    }
-                    if (checked) {
-                        for (GameObject snakeSegment: snake.snakeParts) {
-                            if (enemySnakeHead.x + 1 == snakeSegment.x & enemySnakeHead.y == snakeSegment.y) {
-                                checked = false;
-                                break;
-                            }
-                        }
-                    }
-                    if (checked) {
+                    newHead = new GameObject(enemySnakeHead.x++, enemySnakeHead.y);
+                    if (checkNextDirection(newHead, snake)) {
                         setNextDirection(Direction.RIGHT);
-                    } else
-                    {
+                    } else {
                         setNextDirection(Direction.LEFT);
                     }
                 }
         }
+    }
+
+    public boolean checkNextDirection(GameObject newHead, Snake snake) {
+        return !checkCollision(newHead, snakeParts) && !checkCollision(newHead, snake.snakeParts);
     }
 }

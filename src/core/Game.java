@@ -6,23 +6,28 @@ public class Game {
     public Snake snake;
     public EnemySnake enemySnake;
     public Fruit fruit;
-    public int status = 0;
-    public static int GOAL;
+    public int goal;
 
-    public Game(GameBoard gameBoard, String difficulty) {
+    public enum Status {
+        LOSE,
+        WIN,
+        CONTINUE
+    }
+
+    public Game(GameBoard gameBoard, Difficulty difficulty) {
         this.gameBoard = gameBoard;
         snake = new Snake( gameBoard.x/2,  gameBoard.y/2);
         enemySnake = new EnemySnake(0, 0);
         fruit = createNewFruit();
         switch (difficulty) {
-            case "Easy":
-                GOAL = 10;
+            case EASY:
+                goal = 10;
                 break;
-            case "Normal":
-                GOAL = 15;
+            case NORMAL:
+                goal = 15;
                 break;
-            case "Hard":
-                GOAL = 20;
+            case HARD:
+                goal = 20;
                 break;
         }
     }
@@ -42,12 +47,11 @@ public class Game {
         if (!fruit.isAlive) {
             fruit = createNewFruit();
         }
-        checkStatus();
     }
 
     private Fruit createNewFruit() {
         Fruit newApple = new Fruit(getRandomPosX(), getRandomPosY());
-        while (snake.checkCollision(newApple) && enemySnake.checkCollision(newApple)) {
+        while (snake.checkCollision(newApple, snake.snakeParts) && enemySnake.checkCollision(newApple, enemySnake.snakeParts)) {
             newApple = new Fruit(getRandomPosX(), getRandomPosY());
         }
         return newApple;
@@ -61,11 +65,11 @@ public class Game {
         return (int) (Math.random() * gameBoard.y);
     }
 
-    public void checkStatus() {
+    public Status checkStatus() {
         if (!snake.isAlive) {
-            status = -1;
-        } else if (snake.snakeParts.size() > GOAL) {
-            status = 1;
-        }
+            return Status.LOSE;
+        } else if (snake.snakeParts.size() > goal) {
+           return Status.WIN;
+        } else return Status.CONTINUE;
     }
 }
