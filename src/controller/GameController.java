@@ -1,21 +1,21 @@
 package controller;
 
 import core.Difficulty;
+import core.Game;
+import core.Direction;
+
+import view.GameView;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.util.Duration;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
-
-import view.GameView;
-
-import core.Game;
-import core.Direction;
 
 public class GameController {
 
@@ -25,14 +25,11 @@ public class GameController {
     private Game game;
     private GameView graphics;
     private Timeline timeLine;
-    private double WIDTH;
-    private double HEIGHT;
 
 
     public void goFrame() throws FileNotFoundException {
-        graphics = new GameView(game, WIDTH, HEIGHT);
+        graphics = new GameView(game);
         graphics.drawScene();
-        gamePane.setPrefSize(WIDTH, HEIGHT);
         setGraphicsOnPane();
         gamePane.setFocusTraversable(true);
         timeLine.setCycleCount(Animation.INDEFINITE);
@@ -63,8 +60,8 @@ public class GameController {
     private void setGraphicsOnPane() {
         gamePane.getChildren().clear();
         ImageView[][] images = graphics.getArrayOfImages();
-        for (int y = 0; y < game.getGameBoard().y; y++) {
-            for (int x = 0; x < game.getGameBoard().x; x++) {
+        for (int y = 0; y < game.getGameBoard().getY(); y++) {
+            for (int x = 0; x < game.getGameBoard().getX(); x++) {
                     gamePane.add(images[x][y], x, y);
             }
         }
@@ -117,10 +114,5 @@ public class GameController {
             graphics.drawScene();
             setGraphicsOnPane();
         }));
-    }
-
-    public void setWidthAndHeight(double WIDTH, double HEIGHT) {
-        this.WIDTH = WIDTH;
-        this.HEIGHT = HEIGHT;
     }
 }

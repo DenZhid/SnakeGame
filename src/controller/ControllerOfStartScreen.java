@@ -17,39 +17,31 @@ public class ControllerOfStartScreen {
 
     public ComboBox<Difficulty> comboBoxDifficulty;
     public ComboBox<String> comboBoxSize;
-    public ComboBox<String> comboBoxWindow;
+    public static final double WIDTH = 600;
+    public static final double HEIGHT = 400;
 
     private Stage stage;
-
 
     public void setStartScreen() {
         ObservableList<String> listOfSizes = FXCollections.observableArrayList("10x10", "15x15", "20x20");
         ObservableList<Difficulty> listOfDifficulties = FXCollections.observableArrayList(
                 Difficulty.EASY, Difficulty.NORMAL, Difficulty.HARD
         );
-        ObservableList<String> listOfWindowSizes = FXCollections.observableArrayList(
-                "600x400", "800x600","1280x1024"
-        );
         comboBoxDifficulty.setItems(listOfDifficulties);
         comboBoxSize.setItems(listOfSizes);
-        comboBoxWindow.setItems(listOfWindowSizes);
     }
 
     @FXML
     public void startGame() throws Exception {
         Difficulty difficulty = (comboBoxDifficulty.getValue() == null)? Difficulty.EASY: comboBoxDifficulty.getValue();
         String size = (comboBoxSize.getValue() == null)? "10x10": comboBoxSize.getValue();
-        String windowSize = (comboBoxWindow.getValue() == null)? "600x400": comboBoxWindow.getValue();
 
-        double WIDTH = Double.parseDouble(windowSize.split("x")[0]);
-        double HEIGHT = Double.parseDouble(windowSize.split("x")[1]);
         GameBoard gameBoard = new GameBoard(size);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = loader.load();
         GameController gameController = loader.getController();
         Game game = new Game(gameBoard, difficulty);
         gameController.setGame(game);
-        gameController.setWidthAndHeight(WIDTH, HEIGHT);
         gameController.setTurnDelay(difficulty);
         gameController.goFrame();
 

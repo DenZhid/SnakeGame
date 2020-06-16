@@ -2,6 +2,7 @@ package core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Snake {
 
@@ -29,7 +30,7 @@ public class Snake {
                         currentDirection != Direction.DOWN & nextDirection == Direction.UP
         ) currentDirection = nextDirection;
         GameObject newHead = createNewHead();
-        if (newHead.x >= gameBoard.x || newHead.x < 0 || newHead.y < 0 || newHead.y >= gameBoard.y) {
+        if (newHead.getX() >= gameBoard.getX() || newHead.getX() < 0 || newHead.getY() < 0 || newHead.getY() >= gameBoard.getY()) {
             isAlive = false;
             snakeParts.clear();
             deathTimer = 5;
@@ -46,7 +47,7 @@ public class Snake {
                         return;
                     }
                 snakeParts.add(0, newHead);
-                if (newHead.x == fruit.x & newHead.y == fruit.y) {
+                if (newHead.getX() == fruit.getX() & newHead.getY() == fruit.getY()) {
                     fruit.setStatusOfFruit(false);
                 } else {
                     removeTail();
@@ -57,7 +58,7 @@ public class Snake {
 
     public boolean checkCollision(GameObject newHead, List<GameObject> partsOfSnake) {
         for (GameObject segment: partsOfSnake) {
-            if (newHead.x == segment.x && newHead.y == segment.y) {
+            if (newHead.getX() == segment.getX() && newHead.getY() == segment.getY()) {
                 return true;
             }
         }
@@ -68,16 +69,16 @@ public class Snake {
         GameObject head = new GameObject(0, 0);
         switch(currentDirection) {
             case LEFT:
-                head = new GameObject(snakeParts.get(0).x - 1, snakeParts.get(0).y);
+                head = new GameObject(snakeParts.get(0).getX() - 1, snakeParts.get(0).getY());
                 break;
             case RIGHT:
-                head = new GameObject(snakeParts.get(0).x + 1, snakeParts.get(0).y);
+                head = new GameObject(snakeParts.get(0).getX() + 1, snakeParts.get(0).getY());
                 break;
             case UP:
-                head = new GameObject(snakeParts.get(0).x, snakeParts.get(0).y - 1);
+                head = new GameObject(snakeParts.get(0).getX(), snakeParts.get(0).getY() - 1);
                 break;
             case DOWN:
-                head = new GameObject(snakeParts.get(0).x, snakeParts.get(0).y + 1);
+                head = new GameObject(snakeParts.get(0).getX(), snakeParts.get(0).getY() + 1);
                 break;
         }
         return head;
@@ -121,5 +122,33 @@ public class Snake {
 
     public void setNextDirection(Direction nextDirection) {
         this.nextDirection = nextDirection;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Snake snake = (Snake) o;
+        return isAlive == snake.isAlive &&
+                deathTimer == snake.deathTimer &&
+                Objects.equals(snakeParts, snake.snakeParts) &&
+                currentDirection == snake.currentDirection &&
+                nextDirection == snake.nextDirection;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(snakeParts, currentDirection, nextDirection, isAlive, deathTimer);
+    }
+
+    @Override
+    public String toString() {
+        return "Snake{" +
+                "snakeParts=" + snakeParts +
+                ", currentDirection=" + currentDirection +
+                ", nextDirection=" + nextDirection +
+                ", isAlive=" + isAlive +
+                ", deathTimer=" + deathTimer +
+                '}';
     }
 }

@@ -2,8 +2,8 @@ package core;
 
 public class GameBoard {
 
-    public int x;
-    public int y;
+    private int x;
+    private int y;
 
     public GameBoard(String size) {
         int x = Integer.parseInt(size.split("x")[0]);
@@ -11,5 +11,13 @@ public class GameBoard {
 
         this.x = x;
         this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }

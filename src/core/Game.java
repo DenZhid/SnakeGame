@@ -7,17 +7,10 @@ public class Game {
     private EnemySnake enemySnake;
     private Fruit fruit;
     private int goal;
-    private int deathTimer;
-
-    public enum Status {
-        LOSE,
-        WIN,
-        CONTINUE
-    }
 
     public Game(GameBoard gameBoard, Difficulty difficulty) {
         this.gameBoard = gameBoard;
-        snake = new Snake( gameBoard.x/2,  gameBoard.y/2);
+        snake = new Snake( gameBoard.getX()/2,  gameBoard.getY()/2);
         enemySnake = new EnemySnake(0, 0);
         fruit = createNewFruit();
         switch (difficulty) {
@@ -35,9 +28,9 @@ public class Game {
 
     public void step() {
         snake.move(fruit, gameBoard, enemySnake);
-        deathTimer = enemySnake.getDeathTimer();
+        int deathTimer = enemySnake.getDeathTimer();
         if (enemySnake.getStatusOfSnake()) {
-            enemySnake.getNextDirection(fruit, snake);
+            enemySnake.findNextDirection(fruit, snake);
             enemySnake.checkBorder(gameBoard);
             enemySnake.move(fruit, gameBoard, snake);
         } else {
@@ -52,7 +45,7 @@ public class Game {
         }
     }
 
-    private Fruit createNewFruit() {
+    public Fruit createNewFruit() {
         Fruit newApple = new Fruit(getRandomPosX(), getRandomPosY());
         while (
                 snake.checkCollision(newApple, snake.getSnakeParts()) &&
@@ -63,12 +56,12 @@ public class Game {
         return newApple;
     }
 
-    private int getRandomPosX() {
-        return (int) (Math.random() * gameBoard.x);
+    public int getRandomPosX() {
+        return (int) (Math.random() * gameBoard.getX());
     }
 
-    private int getRandomPosY() {
-        return (int) (Math.random() * gameBoard.y);
+    public int getRandomPosY() {
+        return (int) (Math.random() * gameBoard.getY());
     }
 
     public Status checkStatus() {
@@ -91,7 +84,19 @@ public class Game {
         return fruit;
     }
 
+    public void setFruit(Fruit fruit) {
+        this.fruit = fruit;
+    }
+
     public EnemySnake getEnemySnake() {
         return enemySnake;
+    }
+
+    public void setEnemySnake(EnemySnake enemySnake) {
+        this.enemySnake = enemySnake;
+    }
+
+    public void setSnake(Snake snake) {
+        this.snake = snake;
     }
 }

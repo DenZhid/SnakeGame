@@ -4,10 +4,23 @@ import java.util.Objects;
 
 public class GameObject {
 
-    public int x;
-    public int y;
+    private int x;
+    private int y;
 
     public GameObject(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setXY(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -26,11 +39,11 @@ public class GameObject {
         return Objects.hash(x, y);
     }
 
-    /*@Override
+    @Override
     public String toString() {
         return "GameObject{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';
-    }*/
+    }
 }

@@ -1,8 +1,5 @@
 import core.*;
-import org.ietf.jgss.GSSManager;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 
