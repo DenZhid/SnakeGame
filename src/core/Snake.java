@@ -140,15 +140,4 @@ public class Snake {
     public int hashCode() {
         return Objects.hash(snakeParts, currentDirection, nextDirection, isAlive, deathTimer);
     }
-
-    @Override
-    public String toString() {
-        return "Snake{" +
-                "snakeParts=" + snakeParts +
-                ", currentDirection=" + currentDirection +
-                ", nextDirection=" + nextDirection +
-                ", isAlive=" + isAlive +
-                ", deathTimer=" + deathTimer +
-                '}';
-    }
 }

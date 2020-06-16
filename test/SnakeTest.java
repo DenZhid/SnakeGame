@@ -4,24 +4,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class SnakeTest {
-
-    @Test
-    public void setNextDirection() {
-        Snake snake = new Snake(0,0);
-
-        snake.setNextDirection(Direction.LEFT);
-        assertEquals(Direction.LEFT, snake.getNextDirection());
-
-        snake.setNextDirection(Direction.RIGHT);
-        assertEquals(Direction.RIGHT, snake.getNextDirection());
-
-        snake.setNextDirection(Direction.UP);
-        assertEquals(Direction.UP, snake.getNextDirection());
-
-        snake.setNextDirection(Direction.DOWN);
-        assertEquals(Direction.DOWN, snake.getNextDirection());
-    }
-
     @Test
     public void move() {
         Snake snake = new Snake(0,0);
