@@ -47,7 +47,7 @@ public class Snake {
                         return;
                     }
                 snakeParts.add(0, newHead);
-                if (newHead.getX() == fruit.getX() & newHead.getY() == fruit.getY()) {
+                if (newHead.getX() == fruit.getX() && newHead.getY() == fruit.getY()) {
                     fruit.setStatusOfFruit(false);
                 } else {
                     removeTail();
