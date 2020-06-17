@@ -112,7 +112,6 @@ public class GameController {
                     break;
             }
             graphics.drawScene();
-            setGraphicsOnPane();
         }));
     }
 }

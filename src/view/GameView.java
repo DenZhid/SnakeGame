@@ -34,7 +34,15 @@ public class GameView {
         arrayOfImages = new ImageView[game.getGameBoard().getX()][game.getGameBoard().getY()];
 
         importImages();
-        redraw();
+        for (int y = 0; y < game.getGameBoard().getY(); y++) {
+            for (int x = 0; x < game.getGameBoard().getX(); x++) {
+                ImageView newImage = new ImageView();
+                newImage.setImage(mapOfImages.get(ViewSegments.EMPTY));
+                newImage.setFitWidth(WIDTH/game.getGameBoard().getX());
+                newImage.setFitHeight(HEIGHT/game.getGameBoard().getY());
+                arrayOfImages[x][y] = newImage;
+            }
+        }
     }
 
     public void importImages() throws FileNotFoundException {
@@ -51,21 +59,19 @@ public class GameView {
         redraw();
         drawFruit();
         if (forGraphics.getEnemySnake().getStatusOfSnake()) {
-            drawSnake(forGraphics.getEnemySnake());
+            drawSnake(forGraphics.getEnemySnake(), ViewSegments.ENEMYSNAKEHEAD, ViewSegments.ENEMYSNAKEBODY);
         }
         if (forGraphics.getSnake().getStatusOfSnake()) {
-            drawSnake(forGraphics.getSnake());
+            drawSnake(forGraphics.getSnake(),ViewSegments.SNAKEHEAD, ViewSegments.SNAKEBODY);
         }
     }
 
     private void redraw() {
         for (int y = 0; y < forGraphics.getGameBoard().getY(); y++) {
             for (int x = 0; x < forGraphics.getGameBoard().getX(); x++) {
-                ImageView newImage = new ImageView();
-                newImage.setImage(mapOfImages.get(ViewSegments.EMPTY));
-                newImage.setFitWidth(WIDTH/forGraphics.getGameBoard().getX());
-                newImage.setFitHeight(HEIGHT/forGraphics.getGameBoard().getY());
-                arrayOfImages[x][y] = newImage;
+                arrayOfImages[x][y].setImage((mapOfImages.get(ViewSegments.EMPTY)));
+                arrayOfImages[x][y].setFitWidth(WIDTH/forGraphics.getGameBoard().getX());
+                arrayOfImages[x][y].setFitHeight(HEIGHT/forGraphics.getGameBoard().getY());
             }
         }
     }
@@ -79,38 +85,21 @@ public class GameView {
                 .setFitHeight(HEIGHT/forGraphics.getGameBoard().getY());
     }
 
-    private void drawSnake(Snake inputSnake) {
-        if (inputSnake == forGraphics.getSnake()) {
+    private void drawSnake(Snake inputSnake, ViewSegments head, ViewSegments body) {
             arrayOfImages[inputSnake.getSnakeParts().get(0).getX()][inputSnake.getSnakeParts().get(0).getY()]
-                    .setImage(mapOfImages.get(ViewSegments.SNAKEHEAD));
+                    .setImage(mapOfImages.get(head));
             arrayOfImages[inputSnake.getSnakeParts().get(0).getX()][inputSnake.getSnakeParts().get(0).getY()]
                     .setFitWidth(WIDTH/forGraphics.getGameBoard().getX());
             arrayOfImages[inputSnake.getSnakeParts().get(0).getX()][inputSnake.getSnakeParts().get(0).getY()]
                     .setFitHeight(HEIGHT/forGraphics.getGameBoard().getY());
             for (int i = 1; i < inputSnake.getSnakeParts().size(); i++) {
                 arrayOfImages[inputSnake.getSnakeParts().get(i).getX()][inputSnake.getSnakeParts().get(i).getY()]
-                        .setImage(mapOfImages.get(ViewSegments.SNAKEBODY));
-                arrayOfImages[inputSnake.getSnakeParts().get(i).getX()][inputSnake.getSnakeParts().get(i).getY()]
-                        .setFitWidth(WIDTH/forGraphics.getGameBoard().getX());
-                arrayOfImages[inputSnake.getSnakeParts().get(i).getX()][inputSnake.getSnakeParts().get(i).getY()]
-                        .setFitHeight(HEIGHT/forGraphics.getGameBoard().getY());
-            }
-        } else {
-            arrayOfImages[inputSnake.getSnakeParts().get(0).getX()][inputSnake.getSnakeParts().get(0).getY()]
-                    .setImage(mapOfImages.get(ViewSegments.ENEMYSNAKEHEAD));
-            arrayOfImages[inputSnake.getSnakeParts().get(0).getX()][inputSnake.getSnakeParts().get(0).getY()]
-                    .setFitWidth(WIDTH / forGraphics.getGameBoard().getX());
-            arrayOfImages[inputSnake.getSnakeParts().get(0).getX()][inputSnake.getSnakeParts().get(0).getY()]
-                    .setFitHeight(HEIGHT / forGraphics.getGameBoard().getY());
-            for (int i = 1; i < inputSnake.getSnakeParts().size(); i++) {
-                arrayOfImages[inputSnake.getSnakeParts().get(i).getX()][inputSnake.getSnakeParts().get(i).getY()]
-                        .setImage(mapOfImages.get(ViewSegments.ENEMYSNAKEBODY));
+                        .setImage(mapOfImages.get(body));
                 arrayOfImages[inputSnake.getSnakeParts().get(i).getX()][inputSnake.getSnakeParts().get(i).getY()]
                         .setFitWidth(WIDTH / forGraphics.getGameBoard().getX());
                 arrayOfImages[inputSnake.getSnakeParts().get(i).getX()][inputSnake.getSnakeParts().get(i).getY()]
                         .setFitHeight(HEIGHT / forGraphics.getGameBoard().getY());
             }
-        }
     }
 
     public ImageView[][] getArrayOfImages(){

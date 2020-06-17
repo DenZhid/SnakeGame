@@ -24,10 +24,10 @@ public class Snake {
 
     public void move(Fruit fruit, GameBoard gameBoard, Snake enemySnake) {
         if (
-                currentDirection != Direction.LEFT & nextDirection == Direction.RIGHT ||
-                        currentDirection != Direction.RIGHT & nextDirection == Direction.LEFT ||
-                        currentDirection != Direction.UP & nextDirection == Direction.DOWN ||
-                        currentDirection != Direction.DOWN & nextDirection == Direction.UP
+                currentDirection != Direction.LEFT && nextDirection == Direction.RIGHT ||
+                        currentDirection != Direction.RIGHT && nextDirection == Direction.LEFT ||
+                        currentDirection != Direction.UP && nextDirection == Direction.DOWN ||
+                        currentDirection != Direction.DOWN && nextDirection == Direction.UP
         ) currentDirection = nextDirection;
         GameObject newHead = createNewHead();
         if (newHead.getX() >= gameBoard.getX() || newHead.getX() < 0 || newHead.getY() < 0 || newHead.getY() >= gameBoard.getY()) {
